@@ -1,0 +1,66 @@
+# Админка Decap: правки сохраняются коммитом в репозиторий, сайт пересобирается сам
+backend:
+  name: github
+  repo: chsts0/KOMO
+  branch: main
+  base_url: https://komo-consulting.ru # TODO: заменить на купленный домен
+  auth_endpoint: api/oauth/auth
+  commit_messages:
+    create: 'Админка: добавлен {{collection}} «{{slug}}»'
+    update: 'Админка: обновлён {{collection}} «{{slug}}»'
+    delete: 'Админка: удалён {{collection}} «{{slug}}»'
+
+locale: ru
+media_folder: src/assets/photos
+public_folder: ../../assets/photos
+
+collections:
+  - name: cases
+    label: Кейсы
+    label_singular: кейс
+    folder: src/content/cases
+    create: true
+    slug: '{{slug}}'
+    identifier_field: title
+    summary: '{{title}} · {{place}}'
+    fields:
+      - { label: Название, name: title, widget: string }
+      - { label: Тип объекта, name: kind, widget: string, hint: 'Например: Корнер итальянской кухни' }
+      - { label: Где, name: place, widget: string, hint: 'Например: Фудмолл «Депо»' }
+      - { label: Коротко для карточки, name: summary, widget: text, hint: '1–2 предложения' }
+      - label: Направления
+        name: services
+        widget: select
+        multiple: true
+        options: [Дизайн, Проектирование, СМР, Снабжение, Сопровождение, Под ключ]
+      - { label: Обложка, name: cover, widget: image }
+      - { label: Описание обложки, name: coverAlt, widget: string, hint: 'Что на фото, для поисковиков и незрячих' }
+      - { label: Порядок, name: order, widget: number, default: 100, hint: 'Меньше число, выше в списке' }
+      - { label: Заголовок для поиска, name: seoTitle, widget: string, required: false }
+      - { label: Описание для поиска, name: seoDescription, widget: text, required: false }
+      - { label: Полный текст кейса, name: body, widget: markdown }
+
+  - name: vacancies
+    label: Вакансии
+    label_singular: вакансию
+    folder: src/content/vacancies
+    create: true
+    slug: '{{slug}}'
+    fields:
+      - { label: Должность, name: title, widget: string }
+      - { label: Город и формат, name: meta, widget: string, hint: 'Например: Москва · полная занятость' }
+      - { label: Порядок, name: order, widget: number, default: 100 }
+      - { label: Опубликована, name: published, widget: boolean, default: true }
+      - { label: Описание, name: body, widget: markdown }
+
+  - name: faq
+    label: Вопросы
+    label_singular: вопрос
+    folder: src/content/faq
+    create: true
+    slug: '{{slug}}'
+    identifier_field: question
+    fields:
+      - { label: Вопрос, name: question, widget: string }
+      - { label: Порядок, name: order, widget: number, default: 100 }
+      - { label: Ответ, name: body, widget: markdown }

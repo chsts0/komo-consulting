@@ -1,0 +1,85 @@
+---
+import { Image } from 'astro:assets';
+import photo from '../assets/photos/o-nas.jpg';
+import Arrow from './Arrow.astro';
+
+const values = [
+  ['Управление', 'Один план и график, в котором живут все подрядчики.'],
+  ['Контроль', 'Регулярно бываем на объекте и отвечаем за качество.'],
+  ['Прозрачность', 'Смета и закупки открыты, видно, куда уходят деньги.'],
+  ['Результат', 'Сдаём объект, готовый принимать гостей, со всеми документами.'],
+];
+---
+
+<section class="section bg-graphite" id="o-nas">
+  <div class="container grid">
+    <Image class="photo" src={photo} alt="Строящийся этаж с видом на Останкинскую башню" widths={[480, 720, 1120]} sizes="(max-width: 860px) 100vw, 560px" />
+    <div>
+      <h2 class="h2">Управляем объектом как проектом</h2>
+      <p class="lead intro">KOMO основал Константин Морозов. Команда ведёт коммерческие объекты от выбора помещения до открытия: считает, строит, закупает и сдаёт документы. По подходу мы ближе к управлению проектом, чем к ремонтной бригаде.</p>
+      <ul class="values">
+        {
+          values.map(([title, text]) => (
+            <li>
+              <h3>{title}</h3>
+              <p class="text">{text}</p>
+            </li>
+          ))
+        }
+      </ul>
+      <!-- Страницы «О компании» пока нет -->
+      <a class="link" href="#kontakty">Подробнее о компании <Arrow /></a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 560px) 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .photo {
+    width: 100%;
+    aspect-ratio: 560 / 640;
+    object-fit: cover;
+  }
+
+  .intro {
+    margin: 40px 0;
+    font-size: 18px;
+    font-weight: 300;
+  }
+
+  .values {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 32px;
+    margin-bottom: 40px;
+  }
+
+  .values li {
+    padding: 24px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  h3 {
+    font-size: 15px;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  @media (max-width: 860px) {
+    .grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    .values {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

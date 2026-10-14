@@ -1,0 +1,112 @@
+---
+import { getImage } from 'astro:assets';
+import metal from '../assets/metal.png';
+import Arrow from './Arrow.astro';
+
+const bg = await getImage({ src: metal, width: 1280, format: 'webp' });
+
+const items = [
+  'Сантехника',
+  'Холодильное оборудование',
+  'Кухонная техника',
+  'Кофемашины и бар',
+  'Мебель',
+  'Свет',
+  'Вывески и лайтбоксы',
+  'Посуда и инвентарь',
+];
+---
+
+<section class="section supply" style={`--metal-bg: url(${bg.src})`}>
+  <div class="container">
+    <div class="section-head">
+      <h2 class="h2">Комплектуем объект целиком</h2>
+      <p class="lead">Обычно подрядчик сдаёт стены, а технику и мебель клиент ищет сам. Мы закупаем, привозим и подключаем всё, без чего объект не откроется.</p>
+    </div>
+    <ul class="grid">
+      {
+        items.map((item, i) => (
+          <li>
+            <span class="num">{String(i + 1).padStart(2, '0')}</span>
+            <p class="h3">{item}</p>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="foot">
+      <p class="lead">Закупки привязаны к графику и бюджету. После запуска берём технику на обслуживание.</p>
+      <a class="btn btn-light" href="#anketa">Обсудить комплектацию <span class="arrow"><Arrow /></span></a>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Тёмный металл из брендбука + затемнение, чтобы белый текст читался */
+  .supply {
+    background:
+      linear-gradient(90deg, rgb(14 14 15 / 0.78) 0%, rgb(14 14 15 / 0.6) 55%, rgb(14 14 15 / 0.42) 100%),
+      var(--metal-bg) center / cover,
+      var(--metal);
+  }
+
+  .supply .section-head .lead {
+    color: rgb(255 255 255 / 0.78);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .grid li {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+    padding: 32px 24px 40px 0;
+    border-bottom: 1px solid rgb(255 255 255 / 0.2);
+  }
+
+  .grid .h3 {
+    font-size: clamp(18px, 1.6vw, 22px);
+  }
+
+  .num {
+    font-size: 14px;
+    color: rgb(255 255 255 / 0.55);
+  }
+
+  .foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 32px;
+    padding-top: 56px;
+  }
+
+  .foot .lead {
+    max-width: 500px;
+    color: rgb(255 255 255 / 0.78);
+  }
+
+  @media (max-width: 1024px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .grid li {
+      gap: 24px;
+      padding: 24px 12px 28px 0;
+    }
+
+    .foot {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .foot .btn {
+      justify-content: space-between;
+    }
+  }
+</style>

@@ -1,0 +1,42 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Services from '../components/Services.astro';
+import Supply from '../components/Supply.astro';
+import Cases from '../components/Cases.astro';
+import Stages from '../components/Stages.astro';
+import About from '../components/About.astro';
+import Faq from '../components/Faq.astro';
+import LeadForm from '../components/LeadForm.astro';
+import Vacancies from '../components/Vacancies.astro';
+import Contacts from '../components/Contacts.astro';
+import { getCollection } from 'astro:content';
+
+const faq = (await getCollection('faq')).sort((a, b) => a.data.order - b.data.order);
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((f) => ({
+    '@type': 'Question',
+    name: f.data.question,
+    acceptedAnswer: { '@type': 'Answer', text: f.body?.trim() ?? '' },
+  })),
+};
+---
+
+<Base
+  title="Открытие кафе, ресторанов и корнеров под ключ | KOMO"
+  description="Проектируем, строим и оснащаем коммерческие объекты от 50 м² в Москве. Проект, ремонт, оборудование и документы ведёт одна команда."
+  jsonLd={[faqLd]}
+>
+  <Hero />
+  <Services />
+  <Supply />
+  <Cases limit={4} />
+  <Stages />
+  <About />
+  <Faq />
+  <LeadForm />
+  <Vacancies />
+  <Contacts />
+</Base>

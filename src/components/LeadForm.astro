@@ -1,0 +1,251 @@
+---
+import Arrow from './Arrow.astro';
+import { SERVICES } from '../content.config';
+
+const kinds = ['Кафе или ресторан', 'Корнер в фудмолле', 'Магазин', 'Шоурум', 'Офис', 'Другое'];
+const stages = ['Ищу помещение', 'Помещение есть', 'Уже идёт ремонт'];
+---
+
+<section class="section bg-graphite" id="anketa">
+  <div class="container grid">
+    <div>
+      <h2 class="h2">Расскажите про ваш объект</h2>
+      <p class="lead intro">Несколько вопросов вместо долгого созвона. Придём на первую встречу уже с вариантами и примерной сметой.</p>
+    </div>
+
+    <form class="form" method="post" action="/api/lead" data-lead-form novalidate>
+      <div class="pair">
+        <label class="field"><span class="visually-hidden">Имя</span><input name="name" placeholder="Имя" autocomplete="name" required maxlength="100" /></label>
+        <label class="field"><span class="visually-hidden">Телефон или Telegram</span><input name="contact" placeholder="Телефон или Telegram" autocomplete="tel" required maxlength="100" /></label>
+      </div>
+
+      <fieldset>
+        <legend>Что открываете</legend>
+        <div class="chips">
+          {kinds.map((k) => <label class="chip"><input type="radio" name="kind" value={k} /><span>{k}</span></label>)}
+        </div>
+      </fieldset>
+
+      <div class="pair">
+        <label class="field"><span class="visually-hidden">Площадь, м²</span><input name="area" placeholder="Площадь, м²" inputmode="numeric" maxlength="20" /></label>
+        <label class="field"><span class="visually-hidden">Адрес или район</span><input name="address" placeholder="Адрес или район" maxlength="200" /></label>
+      </div>
+
+      <fieldset>
+        <legend>На какой вы стадии</legend>
+        <div class="chips">
+          {stages.map((s) => <label class="chip"><input type="radio" name="stage" value={s} /><span>{s}</span></label>)}
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Что нужно от нас</legend>
+        <div class="chips">
+          {SERVICES.map((s) => <label class="chip"><input type="checkbox" name="services" value={s} /><span>{s}</span></label>)}
+        </div>
+      </fieldset>
+
+      <div class="pair">
+        <label class="field"><span class="visually-hidden">Бюджет</span><input name="budget" placeholder="Бюджет (необязательно)" maxlength="100" /></label>
+        <label class="field"><span class="visually-hidden">Когда хотите открыться</span><input name="when" placeholder="Когда хотите открыться" maxlength="100" /></label>
+      </div>
+
+      <!-- Ловушка для ботов: люди это поле не видят -->
+      <label class="trap" aria-hidden="true">Сайт<input name="website" tabindex="-1" autocomplete="off" /></label>
+
+      <label class="consent">
+        <input type="checkbox" name="consent" value="yes" required />
+        <span>Согласен на <a href="/soglasie" target="_blank">обработку персональных данных</a> и с <a href="/politika" target="_blank">политикой конфиденциальности</a></span>
+      </label>
+
+      <div class="submit">
+        <button class="btn btn-light" type="submit">Отправить анкету <span class="arrow"><Arrow /></span></button>
+        <p class="status text" role="status" aria-live="polite" data-status></p>
+      </div>
+    </form>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr minmax(0, 680px);
+    gap: 80px;
+  }
+
+  .intro {
+    margin-top: 40px;
+    max-width: 440px;
+    font-size: 18px;
+    font-weight: 300;
+  }
+
+  .form {
+    display: grid;
+    gap: 36px;
+  }
+
+  .pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .field input {
+    width: 100%;
+    padding: 0 0 18px;
+    background: none;
+    border: 0;
+    border-bottom: 1px solid rgb(255 255 255 / 0.3);
+    font-size: 18px;
+    font-weight: 300;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .field input::placeholder {
+    color: var(--gray);
+  }
+
+  .field input:focus {
+    border-bottom-color: var(--white);
+  }
+
+  .field input[aria-invalid='true'] {
+    border-bottom-color: #e5484d;
+  }
+
+  fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  legend {
+    padding: 0;
+    margin-bottom: 14px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .trap {
+    position: absolute;
+    left: -9999px;
+  }
+
+  .consent {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-size: 13px;
+    color: var(--gray);
+    cursor: pointer;
+  }
+
+  .consent input {
+    flex: none;
+    width: 16px;
+    height: 16px;
+    margin: 2px 0 0;
+    accent-color: var(--white);
+  }
+
+  .consent a {
+    color: var(--light);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .submit {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .submit button[disabled] {
+    opacity: 0.6;
+    cursor: wait;
+  }
+
+  .status:empty {
+    display: none;
+  }
+
+  .status.is-error {
+    color: #ff8a8d;
+  }
+
+  .status.is-ok {
+    color: var(--white);
+  }
+
+  @media (max-width: 1024px) {
+    .grid {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .pair {
+      grid-template-columns: 1fr;
+      gap: 36px;
+    }
+
+    .submit {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .submit .btn {
+      justify-content: space-between;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('[data-lead-form]').forEach((form) => {
+    const status = form.querySelector<HTMLElement>('[data-status]')!;
+    const button = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+
+    const say = (text: string, kind: 'ok' | 'error') => {
+      status.textContent = text;
+      status.className = `status text is-${kind}`;
+    };
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const required = [...form.querySelectorAll<HTMLInputElement>('input[required]')];
+      let firstInvalid: HTMLInputElement | undefined;
+      required.forEach((input) => {
+        const bad = input.type === 'checkbox' ? !input.checked : !input.value.trim();
+        input.setAttribute('aria-invalid', String(bad));
+        if (bad && !firstInvalid) firstInvalid = input;
+      });
+      if (firstInvalid) {
+        say(firstInvalid.name === 'consent' ? 'Отметьте согласие на обработку данных.' : 'Заполните имя и контакт.', 'error');
+        firstInvalid.focus();
+        return;
+      }
+
+      button.disabled = true;
+      status.textContent = '';
+      try {
+        const response = await fetch(form.action, { method: 'POST', body: new FormData(form) });
+        if (!response.ok) throw new Error(String(response.status));
+        form.reset();
+        say('Анкета отправлена, скоро свяжемся.', 'ok');
+      } catch {
+        say('Не получилось отправить. Позвоните нам или попробуйте ещё раз.', 'error');
+      } finally {
+        button.disabled = false;
+      }
+    });
+  });
+</script>

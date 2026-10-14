@@ -1,0 +1,100 @@
+---
+import Arrow from './Arrow.astro';
+import { site, phoneHref } from '../lib/site';
+---
+
+<section class="section bg-graphite" id="kontakty">
+  <div class="container grid">
+    <div>
+      <h2 class="display">Обсудим ваш объект</h2>
+      <ul class="people">
+        {
+          site.contacts.map((c) => (
+            <li>
+              <p class="name">{c.name}</p>
+              <p class="text">{c.role}</p>
+              <a class="phone" href={phoneHref(c.phone)}>{c.phone}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+    <ul class="links">
+      {
+        site.links.map((l) => (
+          <li>
+            <a class="row" href={l.href}>
+              <span>
+                <span class="h3">{l.label}</span>
+                <span class="text note">{l.note}</span>
+              </span>
+              <span class="round round-filled"><Arrow /></span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr minmax(0, 560px);
+    gap: 80px;
+  }
+
+  .people {
+    display: grid;
+    gap: 32px;
+    margin-top: 48px;
+  }
+
+  .name {
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  .people .text {
+    font-size: 14px;
+    margin: 4px 0 8px;
+  }
+
+  .phone {
+    font-size: 20px;
+    font-weight: 400;
+  }
+
+  .phone:hover {
+    opacity: 0.7;
+  }
+
+  .links {
+    border-top: 1px solid var(--line);
+  }
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .row .h3,
+  .note {
+    display: block;
+  }
+
+  .note {
+    margin-top: 6px;
+    font-size: 14px;
+  }
+
+  @media (max-width: 1024px) {
+    .grid {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+  }
+</style>

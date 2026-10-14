@@ -1,0 +1,51 @@
+---
+import logo from '../assets/logo-white.svg?raw';
+import { site } from '../lib/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="footer bg-graphite">
+  <div class="container footer-inner">
+    <a class="logo" href="/" aria-label="KOMO Consulting, на главную" set:html={logo} />
+    <p class="text">{site.tagline}</p>
+    <a class="text" href="/politika">Политика конфиденциальности</a>
+    <p class="text">© KOMO, {year}</p>
+  </div>
+</footer>
+
+<style>
+  .footer-inner {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr 1fr auto;
+    gap: 32px;
+    align-items: center;
+    padding-top: 40px;
+    padding-bottom: 56px;
+    border-top: 1px solid var(--line);
+  }
+
+  .logo {
+    width: 118px;
+  }
+
+  .logo :global(svg) {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .footer p.text {
+    max-width: 300px;
+  }
+
+  a.text:hover {
+    color: var(--white);
+  }
+
+  @media (max-width: 860px) {
+    .footer-inner {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+  }
+</style>
