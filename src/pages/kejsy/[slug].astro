@@ -4,6 +4,7 @@ import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import LeadForm from '../../components/LeadForm.astro';
 import Arrow from '../../components/Arrow.astro';
+import { link } from '../../lib/site';
 
 export async function getStaticPaths() {
   const cases = await getCollection('cases');
@@ -18,8 +19,8 @@ const breadcrumbs = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Главная', item: new URL('/', Astro.site).toString() },
-    { '@type': 'ListItem', position: 2, name: 'Кейсы', item: new URL('/kejsy', Astro.site).toString() },
+    { '@type': 'ListItem', position: 1, name: 'Главная', item: new URL(link('/'), Astro.site).toString() },
+    { '@type': 'ListItem', position: 2, name: 'Кейсы', item: new URL(link('/kejsy'), Astro.site).toString() },
     { '@type': 'ListItem', position: 3, name: title },
   ],
 };
@@ -33,7 +34,7 @@ const breadcrumbs = {
 >
   <article class="section case">
     <div class="container">
-      <a class="link back" href="/kejsy"><span class="flip"><Arrow /></span> Все кейсы</a>
+      <a class="link back" href={link('/kejsy')}><span class="flip"><Arrow /></span> Все кейсы</a>
       <header class="head">
         <h1 class="display">{title}</h1>
         <div>

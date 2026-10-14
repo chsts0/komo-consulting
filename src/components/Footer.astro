@@ -1,14 +1,14 @@
 ---
 import logo from '../assets/logo-white.svg?raw';
-import { site } from '../lib/site';
+import { site, link } from '../lib/site';
 const year = new Date().getFullYear();
 ---
 
 <footer class="footer bg-graphite">
   <div class="container footer-inner">
-    <a class="logo" href="/" aria-label="KOMO Consulting, на главную" set:html={logo} />
+    <a class="logo" href={link('/')} aria-label="KOMO Consulting, на главную" set:html={logo} />
     <p class="text">{site.tagline}</p>
-    <a class="text" href="/politika">Политика конфиденциальности</a>
+    <a class="text" href={link('/politika')}>Политика конфиденциальности</a>
     <p class="text">© KOMO, {year}</p>
   </div>
 </footer>

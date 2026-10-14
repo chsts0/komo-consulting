@@ -1,4 +1,5 @@
 ---
+import { link } from '../lib/site';
 import { getCollection } from 'astro:content';
 import Arrow from './Arrow.astro';
 
@@ -15,7 +16,7 @@ const items = (await getCollection('vacancies', (v) => v.data.published)).sort((
       {
         items.map((v) => (
           <li>
-            <a class="row" href={`/vakansii/${v.id}`}>
+            <a class="row" href={link(`/vakansii/${v.id}`)}>
               <h3 class="h3">{v.data.title}</h3>
               <p class="text">{v.data.meta}</p>
               <span class="round round-filled"><Arrow /></span>

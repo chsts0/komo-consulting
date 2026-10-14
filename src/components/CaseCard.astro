@@ -1,4 +1,5 @@
 ---
+import { link } from '../lib/site';
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 
@@ -12,7 +13,7 @@ const { title, kind, place, summary, services, cover, coverAlt } = item.data;
 ---
 
 <li class:list={['card', { big }]} data-case data-services={services.join('|')}>
-  <a href={`/kejsy/${item.id}`}>
+  <a href={link(`/kejsy/${item.id}`)}>
     <div class="photo">
       <Image
         src={cover}

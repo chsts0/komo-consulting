@@ -1,3 +1,6 @@
+// Ссылки внутри сайта: на GitHub Pages сайт живёт в подпапке /KOMO, в проде в корне
+export const link = (path: string) => `${import.meta.env.BASE_URL.replace(/\/$/, '')}${path}`;
+
 // Всё, что заказчик ещё не прислал, помечено TODO: ники, почта, адрес, юрлицо
 
 export const site = {
@@ -20,12 +23,12 @@ export const site = {
 
 // Пока внутренних страниц нет, меню скроллит к блокам главной (решение Стаса)
 export const nav = [
-  { label: 'О нас', href: '/#o-nas' },
-  { label: 'Услуги', href: '/#uslugi' },
-  { label: 'Кейсы', href: '/#kejsy' },
-  { label: 'Q&A', href: '/#voprosy' },
-  { label: 'Вакансии', href: '/#vakansii' },
-  { label: 'Контакты', href: '/#kontakty' },
+  { label: 'О нас', href: link('/#o-nas') },
+  { label: 'Услуги', href: link('/#uslugi') },
+  { label: 'Кейсы', href: link('/#kejsy') },
+  { label: 'Q&A', href: link('/#voprosy') },
+  { label: 'Вакансии', href: link('/#vakansii') },
+  { label: 'Контакты', href: link('/#kontakty') },
 ];
 
 export const phoneHref = (phone: string) => `tel:${phone.replace(/[^\d+]/g, '')}`;

@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "build:demo": "DEMO=true astro build",
     "preview": "astro preview",
     "start": "node ./dist/server/entry.mjs",
     "check": "astro check"

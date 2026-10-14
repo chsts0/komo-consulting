@@ -1,6 +1,9 @@
 ---
+import { link } from '../lib/site';
 import Arrow from './Arrow.astro';
 import { SERVICES } from '../content.config';
+
+const demo = import.meta.env.PUBLIC_DEMO === 'true';
 
 const kinds = ['Кафе или ресторан', 'Корнер в фудмолле', 'Магазин', 'Шоурум', 'Офис', 'Другое'];
 const stages = ['Ищу помещение', 'Помещение есть', 'Уже идёт ремонт'];
@@ -13,7 +16,7 @@ const stages = ['Ищу помещение', 'Помещение есть', 'У�
       <p class="lead intro">Несколько вопросов вместо долгого созвона. Придём на первую встречу уже с вариантами и примерной сметой.</p>
     </div>
 
-    <form class="form" method="post" action="/api/lead" data-lead-form novalidate>
+    <form class="form" method="post" action={link('/api/lead')} data-demo={demo || undefined} data-lead-form novalidate>
       <div class="pair">
         <label class="field"><span class="visually-hidden">Имя</span><input name="name" placeholder="Имя" autocomplete="name" required maxlength="100" /></label>
         <label class="field"><span class="visually-hidden">Телефон или Telegram</span><input name="contact" placeholder="Телефон или Telegram" autocomplete="tel" required maxlength="100" /></label>
@@ -55,7 +58,7 @@ const stages = ['Ищу помещение', 'Помещение есть', 'У�
 
       <label class="consent">
         <input type="checkbox" name="consent" value="yes" required />
-        <span>Согласен на <a href="/soglasie" target="_blank">обработку персональных данных</a> и с <a href="/politika" target="_blank">политикой конфиденциальности</a></span>
+        <span>Согласен на <a href={link('/soglasie')} target="_blank">обработку персональных данных</a> и с <a href={link('/politika')} target="_blank">политикой конфиденциальности</a></span>
       </label>
 
       <div class="submit">
@@ -231,6 +234,12 @@ const stages = ['Ищу помещение', 'Помещение есть', 'У�
       if (firstInvalid) {
         say(firstInvalid.name === 'consent' ? 'Отметьте согласие на обработку данных.' : 'Заполните имя и контакт.', 'error');
         firstInvalid.focus();
+        return;
+      }
+
+      // На демке сервера нет, анкета никуда не уходит
+      if (form.hasAttribute('data-demo')) {
+        say('Это демо-версия сайта: на ней анкета не отправляется.', 'ok');
         return;
       }
 

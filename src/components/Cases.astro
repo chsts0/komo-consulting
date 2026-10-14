@@ -1,4 +1,5 @@
 ---
+import { link } from '../lib/site';
 import { getCollection } from 'astro:content';
 import { SERVICES } from '../content.config';
 import CaseCard from './CaseCard.astro';
@@ -18,7 +19,7 @@ const items = limit ? all.slice(0, limit) : all;
   <div class="container">
     <div class="head">
       <h2 class="h2">Кейсы</h2>
-      {showAllLink && <a class="link" href="/kejsy">Все кейсы <Arrow /></a>}
+      {showAllLink && <a class="link" href={link('/kejsy')}>Все кейсы <Arrow /></a>}
     </div>
     <fieldset class="filter" data-filter>
       <legend class="text">Направления</legend>

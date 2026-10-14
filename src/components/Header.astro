@@ -1,18 +1,18 @@
 ---
 import logo from '../assets/logo-white.svg?raw';
 import Arrow from './Arrow.astro';
-import { nav } from '../lib/site';
+import { nav, link } from '../lib/site';
 ---
 
 <header class="header" data-header>
   <div class="container header-inner">
-    <a class="logo" href="/" aria-label="KOMO Consulting, на главную" set:html={logo} />
+    <a class="logo" href={link('/')} aria-label="KOMO Consulting, на главную" set:html={logo} />
     <nav class="nav" aria-label="Основное меню">
       <ul>
         {nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
       </ul>
     </nav>
-    <a class="btn btn-light header-cta" href="/#anketa">
+    <a class="btn btn-light header-cta" href={link('/#anketa')}>
       Заполнить анкету <span class="arrow"><Arrow /></span>
     </a>
     <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false" data-burger>
