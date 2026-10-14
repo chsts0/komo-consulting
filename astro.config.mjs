@@ -3,7 +3,7 @@ import { defineConfig } from 'astro/config';
 import node from '@astrojs/node';
 import sitemap from '@astrojs/sitemap';
 
-// DEMO=true собирает статичную демку для GitHub Pages: без сервера, в подпапке /KOMO, закрытую от индексации
+// DEMO=true собирает статичную демку для GitHub Pages: без сервера, в подпапке /komo-consulting, закрытую от индексации
 const demo = process.env.DEMO === 'true';
 process.env.PUBLIC_DEMO = String(demo);
 
@@ -25,7 +25,7 @@ const serverRoutes = {
 
 export default defineConfig({
   site,
-  base: demo ? '/KOMO' : '/',
+  base: demo ? '/komo-consulting' : '/',
   // Страницы собираются статикой, на сервере работают только /api/* (заявки и вход в админку)
   output: 'static',
   ...(demo
