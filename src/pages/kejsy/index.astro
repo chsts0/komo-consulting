@@ -1,0 +1,21 @@
+---
+import Base from '../../layouts/Base.astro';
+import Cases from '../../components/Cases.astro';
+import LeadForm from '../../components/LeadForm.astro';
+---
+
+<Base
+  title="Кейсы: открытые объекты | KOMO"
+  description="Корнеры, кафе и магазины, которые мы открыли в Москве. Фильтр по услугам: дизайн, проектирование, СМР, снабжение, сопровождение."
+>
+  <div class="spacer"></div>
+  <Cases showAllLink={false} />
+  <LeadForm />
+</Base>
+
+<style>
+  .spacer {
+    height: 72px;
+    background: var(--graphite);
+  }
+</style>

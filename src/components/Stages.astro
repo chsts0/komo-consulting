@@ -1,0 +1,96 @@
+---
+const stages = [
+  ['Переговоры', 'Собираем вводные: помещение, идея, бюджет, сроки'],
+  ['Проектирование', 'Разрабатываем проектную документацию'],
+  ['Смета', 'Делим работы, материалы и оборудование'],
+  ['Согласование', 'Утверждаем объём, стоимость и график'],
+  ['Выход на объект', 'Организуем площадку и запускаем работы'],
+  ['СМР', 'Строим по проекту и смете'],
+  ['Смежники и снабжение', 'Ведём поставки и всех подрядчиков'],
+  ['Первичная сдача', 'Фиксируем замечания'],
+  ['Пусконаладка', 'Запускаем инженерные системы'],
+  ['Документы', 'Сдаём чистую исполнительную документацию'],
+];
+---
+
+<section class="section bg-black" id="etapy">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="h2">10 этапов</h2>
+      <p class="lead">Можем подключиться на любом этапе или вести объект от первой встречи до сдачи документов.</p>
+    </div>
+    <ol class="grid">
+      {
+        stages.map(([title, text], i) => (
+          <li>
+            <span class="num">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{title}</h3>
+            <p class="text">{text}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .grid li {
+    padding: 36px 24px 48px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .grid li:nth-last-child(-n + 5) {
+    border-bottom: 0;
+  }
+
+  .num {
+    display: block;
+    font-size: clamp(36px, 3.4vw, 48px);
+    font-weight: 300;
+    line-height: 1;
+    margin-bottom: 24px;
+  }
+
+  h3 {
+    font-size: 15px;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  @media (max-width: 1024px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid li:nth-last-child(-n + 5) {
+      border-bottom: 1px solid var(--line);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+
+    .grid li {
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      padding: 24px 0;
+    }
+
+    .num {
+      grid-row: span 2;
+      font-size: 28px;
+      margin: 0;
+    }
+  }
+</style>

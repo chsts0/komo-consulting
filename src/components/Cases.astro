@@ -1,0 +1,118 @@
+---
+import { link } from '../lib/site';
+import { getCollection } from 'astro:content';
+import { SERVICES } from '../content.config';
+import CaseCard from './CaseCard.astro';
+import Arrow from './Arrow.astro';
+
+interface Props {
+  limit?: number;
+  showAllLink?: boolean;
+}
+
+const { limit, showAllLink = true } = Astro.props;
+const all = (await getCollection('cases')).sort((a, b) => a.data.order - b.data.order);
+const items = limit ? all.slice(0, limit) : all;
+---
+
+<section class="section bg-graphite" id="kejsy">
+  <div class="container">
+    <div class="head">
+      <h2 class="h2">Кейсы</h2>
+      {showAllLink && <a class="link" href={link('/kejsy')}>Все кейсы <Arrow /></a>}
+    </div>
+    <fieldset class="filter" data-filter>
+      <legend class="text">Направления</legend>
+      <label class="chip chip-plain"><input type="checkbox" value="" checked data-all /><span>Все</span></label>
+      {SERVICES.map((s) => <label class="chip"><input type="checkbox" value={s} /><span>{s}</span></label>)}
+    </fieldset>
+    <ul class="cards">
+      {items.map((item, i) => <CaseCard item={item} big={i === 0} />)}
+    </ul>
+    <p class="empty text" hidden data-empty>По выбранным направлениям кейсов пока нет.</p>
+  </div>
+</section>
+
+<style>
+  .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    padding-bottom: 56px;
+  }
+
+  .filter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 56px;
+    padding: 20px 0;
+    border: 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .filter legend {
+    float: left;
+    margin-right: 20px;
+    font-size: 14px;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 64px 24px;
+  }
+
+  .cards :global(.big) {
+    grid-column: 1 / -1;
+  }
+
+  .empty {
+    padding-top: 24px;
+  }
+
+  @media (max-width: 860px) {
+    .cards {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+
+    .filter legend {
+      float: none;
+      width: 100%;
+      margin-bottom: 8px;
+    }
+  }
+</style>
+
+<script>
+  // Фильтр как у setters.agency: несколько направлений сразу, кейс виден, если есть хоть одно совпадение
+  document.querySelectorAll<HTMLFieldSetElement>('[data-filter]').forEach((filter) => {
+    const section = filter.closest('section')!;
+    const all = filter.querySelector<HTMLInputElement>('[data-all]')!;
+    const boxes = [...filter.querySelectorAll<HTMLInputElement>('input:not([data-all])')];
+    const cards = [...section.querySelectorAll<HTMLElement>('[data-case]')];
+    const empty = section.querySelector<HTMLElement>('[data-empty]')!;
+
+    const apply = () => {
+      const picked = boxes.filter((b) => b.checked).map((b) => b.value);
+      all.checked = picked.length === 0;
+      let visible = 0;
+      cards.forEach((card) => {
+        const services = card.dataset.services!.split('|');
+        const show = picked.length === 0 || picked.some((p) => services.includes(p));
+        card.hidden = !show;
+        if (show) visible++;
+      });
+      empty.hidden = visible > 0;
+    };
+
+    all.addEventListener('change', () => {
+      boxes.forEach((b) => (b.checked = false));
+      apply();
+    });
+    boxes.forEach((b) => b.addEventListener('change', apply));
+  });
+</script>

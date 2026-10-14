@@ -1,0 +1,65 @@
+---
+import { link } from '../lib/site';
+import { getCollection } from 'astro:content';
+import Arrow from './Arrow.astro';
+
+const items = (await getCollection('vacancies', (v) => v.data.published)).sort((a, b) => a.data.order - b.data.order);
+---
+
+<section class="section bg-black" id="vakansii">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="h2">Работа в KOMO</h2>
+      <p class="lead">Ищем людей, которым нравится доводить объекты до открытия.</p>
+    </div>
+    <ul>
+      {
+        items.map((v) => (
+          <li>
+            <a class="row" href={link(`/vakansii/${v.id}`)}>
+              <h3 class="h3">{v.data.title}</h3>
+              <p class="text">{v.data.meta}</p>
+              <span class="round round-filled"><Arrow /></span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <a class="link more" href="#kontakty">Нет подходящей? Пришлите резюме <Arrow /></a>
+  </div>
+</section>
+
+<style>
+  .row {
+    display: grid;
+    grid-template-columns: 1fr minmax(0, 560px) 44px;
+    gap: 24px;
+    align-items: center;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .row:hover .h3 {
+    opacity: 0.7;
+  }
+
+  .more {
+    margin-top: 56px;
+  }
+
+  @media (max-width: 640px) {
+    .row {
+      grid-template-columns: 1fr 44px;
+      gap: 8px 16px;
+    }
+
+    .row .text {
+      grid-row: 2;
+    }
+
+    .round {
+      grid-row: 1 / 3;
+      grid-column: 2;
+    }
+  }
+</style>

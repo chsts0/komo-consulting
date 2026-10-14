@@ -1,0 +1,82 @@
+---
+import Arrow from './Arrow.astro';
+
+// Пока страниц услуг нет, стрелки ведут в анкету
+const services = [
+  { title: 'Дизайн', text: 'Концепция, планировка и визуал объекта. Если бренда ещё нет, начнём с брендбука.' },
+  { title: 'Проектирование', text: 'Дизайн-проект и все разделы: АР, ЭОМ, ОВиК, ВК, ТХ. Решения, по которым можно точно посчитать стоимость.' },
+  { title: 'СМР', text: 'Организуем площадку, ведём подрядчиков, держим сроки, качество и соответствие проекту.' },
+  { title: 'Снабжение и комплектация', text: 'Закупаем и ставим всё, что нужно для работы: от раковины и холодильников до вывески и посуды.' },
+  { title: 'Сопровождение', text: 'Документы, согласования, подключения и пусконаладка. После открытия остаёмся на техобслуживании.' },
+  { title: 'Под ключ', text: 'Все услуги одним проектом, от выбора помещения до первого гостя.' },
+];
+---
+
+<section class="section bg-black" id="uslugi">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="h2">Что мы делаем</h2>
+      <p class="lead">Каждую услугу можно взять отдельно или отдать нам объект целиком.</p>
+    </div>
+    <ul class="list">
+      {
+        services.map((s, i) => (
+          <li>
+            <a class="row" href="#anketa">
+              <span class="num">{String(i + 1).padStart(2, '0')}</span>
+              <h3 class="h3">{s.title}</h3>
+              <p class="lead">{s.text}</p>
+              <span class="round"><Arrow /></span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .row {
+    display: grid;
+    grid-template-columns: 120px 1fr minmax(0, 560px) 44px;
+    gap: 24px;
+    align-items: center;
+    padding: 32px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .num {
+    font-size: 14px;
+    color: var(--gray);
+  }
+
+  .row .lead {
+    font-weight: 300;
+    padding-right: 24px;
+  }
+
+  .row:hover .round {
+    background: var(--white);
+    color: var(--black);
+  }
+
+  @media (max-width: 860px) {
+    .row {
+      grid-template-columns: 40px 1fr 44px;
+      gap: 12px 16px;
+      padding: 24px 0;
+    }
+
+    .row .lead {
+      grid-column: 2 / 3;
+      grid-row: 2;
+      padding-right: 0;
+      font-size: 15px;
+    }
+
+    .round {
+      grid-column: 3;
+      grid-row: 1;
+    }
+  }
+</style>

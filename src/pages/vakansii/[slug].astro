@@ -1,0 +1,54 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Arrow from '../../components/Arrow.astro';
+import { site, link } from '../../lib/site';
+
+export async function getStaticPaths() {
+  const items = await getCollection('vacancies', (v) => v.data.published);
+  return items.map((item) => ({ params: { slug: item.id }, props: { item } }));
+}
+
+const { item } = Astro.props;
+const { Content } = await render(item);
+---
+
+<Base title={`${item.data.title}: вакансия в KOMO`} description={`${item.data.title} в KOMO Consulting. ${item.data.meta}.`}>
+  <article class="section page">
+    <div class="container narrow">
+      <a class="link back" href={link('/#vakansii')}><span class="flip"><Arrow /></span> Все вакансии</a>
+      <h1 class="h2">{item.data.title}</h1>
+      <p class="text meta">{item.data.meta}</p>
+      <div class="content"><Content /></div>
+      <a class="btn btn-light" href={site.telegram}>Откликнуться <span class="arrow"><Arrow /></span></a>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .page {
+    padding-top: 140px;
+  }
+
+  .narrow {
+    max-width: 880px;
+  }
+
+  .back {
+    margin-bottom: 48px;
+  }
+
+  .flip {
+    display: inline-flex;
+    transform: scaleX(-1);
+  }
+
+  .meta {
+    margin: 16px 0 40px;
+  }
+
+  .content {
+    margin-bottom: 48px;
+    color: var(--light);
+  }
+</style>

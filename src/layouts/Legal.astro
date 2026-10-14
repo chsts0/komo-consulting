@@ -1,0 +1,33 @@
+---
+import Base from './Base.astro';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<Base title={`${title} | KOMO`} description={title}>
+  <article class="section page">
+    <div class="container narrow">
+      <h1 class="h2">{title}</h1>
+      <div class="content"><slot /></div>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .page {
+    padding-top: 140px;
+  }
+
+  .narrow {
+    max-width: 880px;
+  }
+
+  .content {
+    margin-top: 40px;
+    color: var(--light);
+  }
+</style>

@@ -1,0 +1,199 @@
+---
+import logo from '../assets/logo-white.svg?raw';
+import Arrow from './Arrow.astro';
+import { nav, link } from '../lib/site';
+---
+
+<header class="header" data-header>
+  <div class="container header-inner">
+    <a class="logo" href={link('/')} aria-label="KOMO Consulting, на главную" set:html={logo} />
+    <nav class="nav" aria-label="Основное меню">
+      <ul>
+        {nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+      </ul>
+    </nav>
+    <a class="btn btn-light header-cta" href={link('/#anketa')}>
+      Заполнить анкету <span class="arrow"><Arrow /></span>
+    </a>
+    <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false" data-burger>
+      <span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 50;
+    transition: background 0.3s, border-color 0.3s;
+    border-bottom: 1px solid transparent;
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    height: 96px;
+    transition: height 0.3s;
+  }
+
+  .logo {
+    flex: none;
+    width: 118px;
+  }
+
+  .logo :global(svg) {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .nav {
+    margin: 0 auto;
+  }
+
+  .nav ul {
+    display: flex;
+    gap: 36px;
+  }
+
+  .nav a {
+    font-size: 15px;
+    font-weight: 400;
+    opacity: 0.9;
+    transition: opacity 0.2s;
+  }
+
+  .nav a:hover {
+    opacity: 0.6;
+  }
+
+  /* На первом экране кнопка в шапке скрыта, чтобы не дублировать кнопку херо */
+  .header-cta {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+  }
+
+  .header.is-scrolled {
+    background: rgb(14 14 15 / 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom-color: var(--line);
+  }
+
+  .header.is-scrolled .header-inner {
+    height: 72px;
+  }
+
+  .header.is-scrolled .header-cta {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .burger {
+    display: none;
+  }
+
+  @media (max-width: 1024px) {
+    .nav {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      display: flex;
+      align-items: center;
+      background: var(--black);
+      padding: 0 var(--gutter);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+
+    .nav ul {
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .nav a {
+      font-size: 32px;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    .header.is-open .nav {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .header-cta {
+      margin-left: auto;
+    }
+
+    .burger {
+      display: grid;
+      gap: 7px;
+      width: 44px;
+      height: 44px;
+      place-content: center;
+      background: none;
+      border: 0;
+      cursor: pointer;
+    }
+
+    .burger span {
+      width: 26px;
+      height: 1.5px;
+      background: var(--white);
+      transition: transform 0.3s;
+    }
+
+    .header.is-open .burger span:first-child {
+      transform: translateY(4.25px) rotate(45deg);
+    }
+
+    .header.is-open .burger span:last-child {
+      transform: translateY(-4.25px) rotate(-45deg);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .header-cta {
+      display: none;
+    }
+
+    .header-inner {
+      height: 72px;
+      justify-content: space-between;
+    }
+
+    .logo {
+      width: 96px;
+    }
+  }
+</style>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]')!;
+  const burger = document.querySelector<HTMLButtonElement>('[data-burger]')!;
+  const hero = document.querySelector('[data-hero]');
+
+  // Липкая шапка с кнопкой появляется, когда херо уехал из вида
+  if (hero) {
+    new IntersectionObserver(
+      ([entry]) => header.classList.toggle('is-scrolled', !entry.isIntersecting),
+      { rootMargin: '-96px 0px 0px 0px' },
+    ).observe(hero);
+  } else {
+    header.classList.add('is-scrolled');
+  }
+
+  const setOpen = (open: boolean) => {
+    header.classList.toggle('is-open', open);
+    burger.setAttribute('aria-expanded', String(open));
+    burger.setAttribute('aria-label', open ? 'Закрыть меню' : 'Открыть меню');
+    document.body.style.overflow = open ? 'hidden' : '';
+  };
+
+  burger.addEventListener('click', () => setOpen(!header.classList.contains('is-open')));
+  header.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+</script>

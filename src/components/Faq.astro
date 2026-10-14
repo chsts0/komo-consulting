@@ -1,0 +1,113 @@
+---
+import { getCollection, render } from 'astro:content';
+import Arrow from './Arrow.astro';
+import { site } from '../lib/site';
+
+const items = (await getCollection('faq')).sort((a, b) => a.data.order - b.data.order);
+const rendered = await Promise.all(items.map(async (item) => ({ item, Content: (await render(item)).Content })));
+---
+
+<section class="section bg-black" id="voprosy">
+  <div class="container grid">
+    <div class="side">
+      <h2 class="h2">Частые вопросы</h2>
+      <p class="text">Не нашли ответ? Спросите нас напрямую.</p>
+      <a class="link" href={site.telegram}>Написать в Telegram <Arrow /></a>
+    </div>
+    <div class="list">
+      {
+        rendered.map(({ item, Content }, i) => (
+          <details open={i === 0}>
+            <summary>
+              <span>{item.data.question}</span>
+              <span class="sign" aria-hidden="true" />
+            </summary>
+            <div class="answer text">
+              <Content />
+            </div>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 420px) 1fr;
+    gap: 80px;
+  }
+
+  .side .text {
+    margin: 24px 0 20px;
+  }
+
+  .list {
+    border-top: 1px solid var(--line);
+  }
+
+  details {
+    border-bottom: 1px solid var(--line);
+  }
+
+  summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    padding: 30px 0;
+    font-size: clamp(18px, 1.6vw, 22px);
+    font-weight: 500;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .sign {
+    position: relative;
+    flex: none;
+    width: 16px;
+    height: 16px;
+  }
+
+  .sign::before,
+  .sign::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 7px;
+    width: 16px;
+    height: 1.5px;
+    background: currentColor;
+    transition: transform 0.2s;
+  }
+
+  .sign::after {
+    transform: rotate(90deg);
+  }
+
+  details[open] .sign::after {
+    transform: rotate(0);
+  }
+
+  .answer {
+    max-width: 640px;
+    padding-bottom: 32px;
+    margin-top: -8px;
+  }
+
+  @media (max-width: 860px) {
+    .grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    summary {
+      padding: 22px 0;
+    }
+  }
+</style>
