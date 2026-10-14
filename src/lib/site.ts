@@ -1,4 +1,4 @@
-// Ссылки внутри сайта: на GitHub Pages сайт живёт в подпапке /KOMO, в проде в корне
+// Ссылки внутри сайта: на GitHub Pages сайт живёт в подпапке /komo-consulting, в проде в корне
 export const link = (path: string) => `${import.meta.env.BASE_URL.replace(/\/$/, '')}${path}`;
 
 // Всё, что заказчик ещё не прислал, помечено TODO: ники, почта, адрес, юрлицо

@@ -1,7 +1,7 @@
 # Админка Decap: правки сохраняются коммитом в репозиторий, сайт пересобирается сам
 backend:
   name: github
-  repo: chsts0/KOMO
+  repo: chsts0/komo-consulting
   branch: main
   base_url: https://komo-consulting.ru # TODO: заменить на купленный домен
   auth_endpoint: api/oauth/auth
